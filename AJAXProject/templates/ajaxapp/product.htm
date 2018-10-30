@@ -1,0 +1,48 @@
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<script type="text/javascript">
+$(document).ready(function(){
+  console.log("Document Loaded...");
+	$("#id_pname").blur(function(){
+		var pname=$("#id_pname").val();
+    console.log(pname);
+  $.ajax({
+			url:'checkproduct',
+      data: {
+        'pname': pname
+          },
+			type:'get',
+      dataType: 'json',
+      success: function (data) {
+        if (data.is_taken)
+        {
+          alert("Product already exists.");
+          $("#id_pname").val("");
+           $("#id_pname").focus();
+        }}
+      });
+    });
+});
+</script>
+{% load crispy_forms_tags %}
+<div class="container">
+{% if messages %}
+   {% for msg in messages%}
+      {{msg}}
+   {%endfor%}
+{%endif%}
+
+  <div class="row">
+    <div class="w-50">
+<form method="post">
+{{form|crispy}}
+{%csrf_token%}
+<input type="submit" value="Save" />
+</form>
+</div>
+</div>
+</div>
